@@ -1,3 +1,5 @@
-credencials
-.vscode
-tmp
+credentials
+
+.gitattributes
+
+__pycache__
