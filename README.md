@@ -1,4 +1,4 @@
 # bbp-original-db-back
- 
+
 - exec
-python .\main.py
+  py main.py
