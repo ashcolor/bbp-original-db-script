@@ -13,7 +13,8 @@ def main(request):
     url = 'https://script.google.com/macros/s/AKfycbx9YwMQpTU_nu5k1mfx1SNigsP5fH_3i6Y55xPJny3XAftsR1s/exec'
 
     # Cloud Storage
-    # gcpCredential = 'credentials/bbp-db.json'  # if local, comment in
+    # if local, comment in
+    # gcpCredential = 'credentials/bbp-db.json'
     bucket = 'bbp-original-db-storage'
     dir = 'test'
     fileName = 'music.csv'
@@ -28,10 +29,13 @@ def main(request):
         f.write(r.text)
 
     # upload file
-    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gcpCredential # if local, comment in
+    # if local, comment in
+    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = gcpCredential
     client = storage.Client()
     bucket = client.get_bucket(bucket)
     blob = bucket.blob(f'{dir}/{fileName}')
-    blob.metadata = {'Cache-Control': 'no-cache'}
     blob.upload_from_filename(filename=temp_local_filename)
+    blob.content_type = 'text/csv'
+    blob.cache_control = 'no-cache'
+    blob.patch()
     return "success"
