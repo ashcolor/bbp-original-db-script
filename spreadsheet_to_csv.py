@@ -18,10 +18,12 @@ def main(request):
     bucket = 'bbp-original-db-storage'
     dir = 'test'
     fileName = 'music.csv'
+    success_message = f'CSVの書き出しに成功しました。<br>https://storage.googleapis.com/bbp-original-db-storage/{dir}/{fileName}'
+    fail_message = f'スプレッドシートの読み込みに失敗しました。{url}'
 
     # get data
     r = requests.get(url)
-    assert r.status_code == requests.codes.ok, "can't read spreadsheet"  # pylint: disable=no-member
+    assert r.status_code == requests.codes.ok, fail_message  # pylint: disable=no-member
 
     # make file
     _, temp_local_filename = tempfile.mkstemp()
@@ -38,4 +40,5 @@ def main(request):
     blob.content_type = 'text/csv'
     blob.cache_control = 'no-cache'
     blob.patch()
-    return "success"
+    print(success_message)
+    return (success_message)
